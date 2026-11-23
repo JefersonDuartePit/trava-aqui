@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trava Aqui · template da v2</title>
+<!--
+  TEMPLATE DA V2. Design especificado: tokens de cor, tipografia e espaçamento definidos,
+  sem emoji, sem degradê, hierarquia clara e pensado para celular. Os dados são simulados.
+  A faixa "Protótipo" e os selos NOVO são só do template: não vão para o app.
+  Veja docs/demo-ao-vivo.md.
+-->
+
+<style>
+  :root {
+    --bg: #f6f7fb; --surface: #fff; --ink: #18203a; --muted: #5a6280; --line: #dde1ee;
+    --accent: #1f3fbf; --mark: #ffe45c; --ok: #1d7a45; --warn: #9a6a00; --bad: #b3261e;
+    --radius: 12px; --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.55 var(--font); }
+  a { color: var(--accent); }
+  .proto { background: var(--ink); color: #fff; font-size: .82rem; padding: 6px 16px; text-align: center; }
+  .topbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--line); background: var(--surface); }
+  .brand { font-weight: 800; font-size: 1.2rem; color: var(--ink); text-decoration: none; }
+  .brand span { background: linear-gradient(transparent 55%, var(--mark) 55%); }
+  .nav { display: flex; gap: 14px; font-size: .95rem; }
+  .nav a[aria-current="page"] { font-weight: 700; text-decoration: none; }
+  .container { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; display: grid; gap: 20px; }
+  h1, h2 { margin: 0; line-height: 1.2; } h1 { font-size: 1.8rem; } h2 { font-size: 1.2rem; }
+  p { margin: 0; }
+  .muted { color: var(--muted); }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; display: grid; gap: 10px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+  .choice { text-decoration: none; color: inherit; } .choice:hover .card { border-color: var(--accent); }
+  .tag { justify-self: start; font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--accent); }
+  .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  label { display: grid; gap: 6px; font-weight: 600; }
+  input, textarea { font: inherit; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); }
+  textarea { min-height: 90px; resize: vertical; }
+  button { font: inherit; font-weight: 700; padding: 10px 18px; border: 0; border-radius: 999px; background: var(--accent); color: #fff; cursor: pointer; }
+  button.ghost { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+  button:disabled { opacity: .5; cursor: not-allowed; }
+  :focus-visible { outline: 3px solid var(--mark); outline-offset: 2px; }
+  .list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  .status { font-size: .8rem; font-weight: 700; padding: 2px 10px; border-radius: 999px; border: 1px solid; }
+  .status.ok { color: var(--ok); } .status.pending { color: var(--warn); }
+  .hint { border-left: 4px solid var(--mark); padding: 8px 12px; background: #fffbe0; border-radius: 0 8px 8px 0; }
+  .hint.locked { background: transparent; color: var(--muted); border-left-color: var(--line); }
+  .hint b { display: block; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+  .feedback { border-radius: var(--radius); padding: 14px 16px; border: 1px solid var(--line); background: var(--surface); }
+  .feedback strong { display: block; }
+  .feedback[data-v="certo"] strong { color: var(--ok); } .feedback[data-v="quase"] strong { color: var(--warn); } .feedback[data-v="ainda-nao"] strong { color: var(--bad); }
+  .note { font-size: .88rem; color: var(--muted); }
+  .new { font-size: .7rem; font-weight: 800; background: var(--mark); color: var(--ink); padding: 1px 7px; border-radius: 4px; margin-left: 6px; vertical-align: 2px; }
+  .spinner { display: inline-block; width: 16px; height: 16px; border: 3px solid var(--line); border-top-color: var(--accent); border-radius: 50%; animation: spin .8s linear infinite; vertical-align: -3px; margin-right: 8px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .spinner { animation: none; } }
+</style>
+</head>
+<body>
+<div class="proto">Template da v2 · dados simulados, sem IA real · <span class="new">NOVO</span> marca o que a v2 acrescenta à base</div>
+<header class="topbar">
+  <a href="#/" class="brand">Trava <span>Aqui</span></a>
+  <nav class="nav" aria-label="Principal">
+    <a href="#/professor" data-nav="professor">Professor</a>
+    <a href="#/aluno" data-nav="aluno">Aluno</a>
+  </nav>
+</header>
+<main class="container" id="app"></main>
+
+<script>
+// ---------- dados simulados ----------
+const state = {
+  activities: [
+    {
+      id: "fotossintese", subject: "Biologia", status: "aprovada",
+      question: "Por que a fotossíntese depende da luz?",
+      expectedAnswer: "Porque a luz fornece a energia que a planta usa para transformar gás carbônico e água em glicose.",
+      keywords: { certo: ["energia"], quase: ["luz", "sol", "glicose"] },
+      hints: [
+        "Toda transformação precisa de energia. De onde a planta tira a dela?",
+        "A planta transforma gás carbônico e água em outra coisa. O que ela produz?",
+        "Junte as duas ideias: o que a luz fornece para essa transformação acontecer?"
+      ]
+    },
+    {
+      id: "porcentagem", subject: "Matemática", status: "aprovada",
+      question: "Uma camiseta custava R$ 80 e entrou em promoção com 25% de desconto. Quanto ela custa agora?",
+      expectedAnswer: "R$ 60.",
+      keywords: { certo: ["60"], quase: ["20"] },
+      hints: [
+        "25% é a mesma coisa que uma fração simples. Qual?",
+        "Quanto é um quarto de 80? Esse é o valor do desconto.",
+        "Agora tire o desconto do preço original."
+      ]
+    },
+    {
+      id: "abolicao", subject: "História", status: "revisao",
+      question: "Por que a abolição da escravidão em 1888 não garantiu condições dignas para a população liberta?",
+      expectedAnswer: "Porque não houve políticas de acesso a terra, trabalho, educação ou indenização.",
+      keywords: { certo: ["terra", "política", "politica"], quase: ["trabalho", "educação", "educacao"] },
+      hints: [
+        "Pense no dia seguinte à abolição. Do que uma pessoa precisava para viver?",
+        "O governo criou alguma forma de garantir terra, trabalho ou estudo para quem foi libertado?",
+        "Compare: o que a lei acabou e o que ela deixou de fazer."
+      ]
+    }
+  ],
+  student: {} // por atividade: { attempts, hintsShown, answer, feedback }
+};
+
+const ALT_HINTS = [
+  "Releia a pergunta e sublinhe a palavra mais importante. O que ela pede?",
+  "Lembre de um exemplo do dia a dia que tenha a ver com isso.",
+  "Tente explicar para um colega em uma frase. O que você diria primeiro?"
+];
+
+const VERDICT = { certo: "Isso aí!", quase: "Quase lá", "ainda-nao": "Ainda não" };
+const FEEDBACK = {
+  certo: "Você chegou na ideia principal. Mandou bem.",
+  quase: "Você está no caminho. Falta ligar essa ideia ao que a pergunta pede.",
+  "ainda-nao": "Ainda não é isso. Que tal pedir uma pista?"
+};
+
+// ---------- utilitários ----------
+const app = document.getElementById("app");
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const find = (id) => state.activities.find((a) => a.id === id);
+const progress = (id) => (state.student[id] ??= { attempts: 0, hintsShown: 0, answer: "", feedback: null });
+const go = (hash) => { location.hash = hash; };
+
+function evaluate(activity, answer) {
+  const text = answer.toLowerCase();
+  if (activity.keywords.certo.some((k) => text.includes(k))) return "certo";
+  if (activity.keywords.quase.some((k) => text.includes(k))) return "quase";
+  return "ainda-nao";
+}
+
+// ---------- telas ----------
+function home() {
+  return `
+    <h1>Travou? A gente destrava junto.</h1>
+    <p class="muted">O professor cria uma atividade curta. O aluno tenta, pede pistas aos poucos e a IA confere, sem entregar a resposta.</p>
+    <div class="grid">
+      <a href="#/professor" class="choice"><div class="card"><span class="tag">Professor</span><h2>Criar e revisar atividades</h2><p class="muted">A IA sugere três pistas e você aprova antes de o aluno ver.</p></div></a>
+      <a href="#/aluno" class="choice"><div class="card"><span class="tag">Aluno</span><h2>Responder uma atividade</h2><p class="muted">Tente, peça uma pista, tente de novo.</p></div></a>
+    </div>`;
+}
+
+function professor() {
+  const items = state.activities.map((a) => `
+    <li class="card">
+      <div class="row"><span class="tag">${esc(a.subject)}</span>
+        ${a.status === "aprovada"
+          ? '<span class="status ok">Pistas aprovadas</span>'
+          : '<span class="status pending">Pistas aguardando revisão</span>'}
+      </div>
+      <strong>${esc(a.question)}</strong>
+      <p class="note">Resposta esperada: ${esc(a.expectedAnswer)}</p>
+      <div class="row"><a href="#/professor/${a.id}">${a.status === "aprovada" ? "Ver pistas" : "Revisar pistas"}</a></div>
+    </li>`).join("");
+  return `
+    <h1>Área do professor</h1>
+    <form class="card" id="new-form">
+      <h2>Nova atividade</h2>
+      <label>Matéria<input id="f-subject" required placeholder="Física"></label>
+      <label>Pergunta para o aluno<textarea id="f-question" required placeholder="O que é inércia?"></textarea></label>
+      <label>Resposta esperada (o aluno não vê)<textarea id="f-answer" required placeholder="A tendência de um corpo manter seu estado de movimento."></textarea></label>
+      <div class="row"><button type="submit">Criar e gerar pistas com IA</button><span class="new">NOVO</span></div>
+    </form>
+    <h2>Atividades</h2>
+    <ul class="list">${items}</ul>`;
+}
+
+function review(id) {
+  const a = find(id);
+  if (!a) return notFound();
+  const approved = a.status === "aprovada";
+  const fields = a.hints.map((h, i) => `
+    <label>Pista ${i + 1}${i === 0 ? " · a mais leve" : i === 2 ? " · a mais direta" : ""}
+      <textarea id="hint-${i}" ${approved ? "readonly" : ""}>${esc(h)}</textarea>
+    </label>
+    ${approved ? "" : `<div class="row"><button type="button" class="ghost" data-regen="${i}">Pedir outra versão à IA</button></div>`}`).join("");
+  return `
+    <a href="#/professor">← Atividades</a>
+    <div class="card"><span class="tag">${esc(a.subject)}</span><h1>${esc(a.question)}</h1>
+      <p class="note">Resposta esperada: ${esc(a.expectedAnswer)}</p></div>
+    <form class="card" id="review-form">
+      <div class="row"><h2>Sequência de pistas</h2><span class="new">NOVO</span></div>
+      <p class="muted">A IA sugeriu três pistas, da mais leve à mais direta. Nenhuma pode entregar a resposta. Edite o que quiser antes de publicar.</p>
+      ${fields}
+      ${approved
+        ? '<p class="status ok" style="justify-self:start">Publicada para os alunos</p><div class="row"><button type="button" class="ghost" id="reopen">Editar de novo</button></div>'
+        : '<div class="row"><button type="submit">Aprovar e publicar</button></div>'}
+    </form>`;
+}
+
+function generating() {
+  return `<div class="card"><p><span class="spinner"></span>A IA está escrevendo três pistas, da mais leve à mais direta…</p></div>`;
+}
+
+function alunoList() {
+  const visible = state.activities.filter((a) => a.status === "aprovada");
+  const items = visible.map((a) => `
+    <li><a href="#/aluno/${a.id}" class="choice"><div class="card"><span class="tag">${esc(a.subject)}</span><strong>${esc(a.question)}</strong></div></a></li>`).join("");
+  return `
+    <h1>Escolha uma atividade</h1>
+    ${visible.length ? "" : '<p class="muted">Nenhuma atividade publicada ainda.</p>'}
+    <ul class="list">${items}</ul>
+    <p class="note">Só aparecem as atividades com pistas aprovadas pelo professor.</p>`;
+}
+
+function atividade(id) {
+  const a = find(id);
+  if (!a || a.status !== "aprovada") return notFound();
+  const p = progress(id);
+  const canHint = p.hintsShown < 3 && p.attempts > p.hintsShown;
+  const hints = a.hints.map((h, i) => i < p.hintsShown
+    ? `<div class="hint"><b>Pista ${i + 1}</b>${esc(h)}</div>`
+    : `<div class="hint locked"><b>Pista ${i + 1}</b>${i === p.hintsShown ? "Libera depois que você tentar responder." : "Ainda bloqueada."}</div>`).join("");
+  const feedback = p.feedback
+    ? `<div class="feedback" data-v="${p.feedback}" role="status"><strong>${VERDICT[p.feedback]}</strong>${FEEDBACK[p.feedback]}</div>` : "";
+  return `
+    <a href="#/aluno">← Atividades</a>
+    <div class="card"><span class="tag">${esc(a.subject)}</span><h1>${esc(a.question)}</h1></div>
+    <form class="card" id="answer-form">
+      <label>Sua resposta<textarea id="answer" placeholder="Escreva com suas palavras">${esc(p.answer)}</textarea></label>
+      <div class="row">
+        <button type="submit">Conferir resposta</button>
+        <button type="button" class="ghost" id="hint-btn" ${canHint ? "" : "disabled"}>Me dá uma pista</button>
+        <span class="new">NOVO</span>
+      </div>
+      <p class="note">Tentativas: ${p.attempts} · pistas usadas: ${p.hintsShown} de 3</p>
+    </form>
+    ${feedback}
+    <div class="card"><h2>Pistas</h2>${hints}</div>
+    <div class="row"><button type="button" class="ghost" id="reset">Recomeçar esta atividade</button></div>`;
+}
+
+function notFound() {
+  return `<p>Essa atividade não está disponível.</p><a href="#/">Voltar ao início</a>`;
+}
+
+// ---------- roteamento e eventos ----------
+function render() {
+  const [, section = "", id] = location.hash.split("/");
+  document.querySelectorAll("[data-nav]").forEach((el) => {
+    if (el.dataset.nav === section) el.setAttribute("aria-current", "page");
+    else el.removeAttribute("aria-current");
+  });
+  if (section === "professor" && id) app.innerHTML = review(id);
+  else if (section === "professor") app.innerHTML = professor();
+  else if (section === "aluno" && id) app.innerHTML = atividade(id);
+  else if (section === "aluno") app.innerHTML = alunoList();
+  else app.innerHTML = home();
+  window.scrollTo(0, 0);
+}
+
+app.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const form = event.target;
+  const [, , id] = location.hash.split("/");
+
+  if (form.id === "new-form") {
+    const subject = document.getElementById("f-subject").value.trim();
+    const question = document.getElementById("f-question").value.trim();
+    const expectedAnswer = document.getElementById("f-answer").value.trim();
+    const newId = "atividade-" + Date.now();
+    const words = expectedAnswer.toLowerCase().split(/\W+/).filter((w) => w.length > 5);
+    state.activities.unshift({
+      id: newId, subject, question, expectedAnswer, status: "revisao",
+      keywords: { certo: words.slice(0, 2), quase: words.slice(2, 5) },
+      hints: [
+        `O que a pergunta está pedindo, com as suas palavras?`,
+        `Que conteúdo de ${subject} que você já estudou tem a ver com isso?`,
+        `Pense num exemplo concreto e explique o que acontece nele.`
+      ]
+    });
+    app.innerHTML = generating();
+    setTimeout(() => go(`#/professor/${newId}`), 1400);
+  }
+
+  if (form.id === "review-form") {
+    const a = find(id);
+    a.hints = a.hints.map((_, i) => document.getElementById(`hint-${i}`).value.trim() || a.hints[i]);
+    a.status = "aprovada";
+    render();
+  }
+
+  if (form.id === "answer-form") {
+    const a = find(id);
+    const p = progress(id);
+    p.answer = document.getElementById("answer").value;
+    if (!p.answer.trim()) return;
+    p.attempts += 1;
+    p.feedback = evaluate(a, p.answer);
+    render();
+  }
+});
+
+app.addEventListener("click", (event) => {
+  const [, , id] = location.hash.split("/");
+  const target = event.target;
+  if (target.dataset.regen !== undefined) {
+    const i = Number(target.dataset.regen);
+    const field = document.getElementById(`hint-${i}`);
+    field.value = ALT_HINTS[(ALT_HINTS.indexOf(field.value) + 1 + i) % ALT_HINTS.length];
+  }
+  if (target.id === "reopen") { find(id).status = "revisao"; render(); }
+  if (target.id === "hint-btn") {
+    const p = progress(id);
+    p.answer = document.getElementById("answer").value;
+    p.hintsShown += 1;
+    render();
+  }
+  if (target.id === "reset") { delete state.student[id]; render(); }
+});
+
+window.addEventListener("hashchange", render);
+render();
+</script>
+</body>
+</html>

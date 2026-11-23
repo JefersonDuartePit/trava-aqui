@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>✨ Trava Aqui AI ✨ · template da v1</title>
+<!--
+  TEMPLATE DA V1. Visual propositalmente genérico, do jeito que uma IA entrega quando ninguém
+  especifica o design: degradê roxo, emoji em tudo, vidro fosco, tudo centralizado e arredondado.
+  Os dados são simulados. Veja docs/demo-ao-vivo.md.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; font-family: "Inter", system-ui, sans-serif; color: #fff; text-align: center;
+    background: linear-gradient(135deg, #6d28d9 0%, #4f46e5 45%, #2563eb 100%) fixed;
+  }
+  a { color: #fff; }
+  .navbar {
+    position: sticky; top: 0; display: flex; justify-content: space-between; align-items: center;
+    padding: 16px 24px; background: rgba(255,255,255,.12); backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255,255,255,.2); z-index: 2;
+  }
+  .logo { font-weight: 800; font-size: 1.25rem; text-decoration: none; }
+  .navbar nav { display: flex; gap: 10px; }
+  .navbar nav a { text-decoration: none; padding: 8px 16px; border-radius: 999px; background: rgba(255,255,255,.15); font-weight: 600; font-size: .9rem; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 48px 20px 80px; display: grid; gap: 28px; justify-items: center; }
+  .badge { display: inline-block; padding: 6px 14px; border-radius: 999px; background: rgba(255,255,255,.2); font-size: .8rem; font-weight: 600; }
+  h1 { font-size: clamp(2rem, 6vw, 3.4rem); margin: 0; line-height: 1.1; font-weight: 800;
+       background: linear-gradient(90deg, #fff, #f0abfc, #a5f3fc); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  h2 { margin: 0; font-size: 1.4rem; }
+  p { margin: 0; opacity: .9; }
+  .glass {
+    width: 100%; padding: 28px; border-radius: 28px; background: rgba(255,255,255,.14);
+    border: 1px solid rgba(255,255,255,.25); backdrop-filter: blur(20px);
+    box-shadow: 0 20px 60px rgba(30, 0, 80, .35); display: grid; gap: 14px; justify-items: center;
+  }
+  .cards { width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+  .cards a { text-decoration: none; }
+  .cards .glass { transition: transform .2s; } .cards a:hover .glass { transform: translateY(-6px) scale(1.02); }
+  .emoji { font-size: 2.6rem; }
+  .stats { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
+  .stat { padding: 14px 22px; border-radius: 20px; background: rgba(255,255,255,.12); font-weight: 800; font-size: 1.3rem; }
+  .stat small { display: block; font-weight: 400; font-size: .75rem; opacity: .8; }
+  input, textarea {
+    width: 100%; font: inherit; color: #fff; padding: 14px 18px; border-radius: 18px; text-align: center;
+    background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.3);
+  }
+  input::placeholder, textarea::placeholder { color: rgba(255,255,255,.6); }
+  textarea { min-height: 110px; }
+  label { width: 100%; display: grid; gap: 8px; font-weight: 600; }
+  .btn {
+    font: inherit; font-weight: 800; color: #fff; border: 0; cursor: pointer; padding: 14px 28px; border-radius: 999px;
+    background: linear-gradient(90deg, #ec4899, #8b5cf6, #06b6d4); box-shadow: 0 10px 30px rgba(236, 72, 153, .45);
+  }
+  .btn.alt { background: linear-gradient(90deg, #f59e0b, #ef4444); box-shadow: 0 10px 30px rgba(245, 158, 11, .45); }
+  .row { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+  .list { list-style: none; padding: 0; margin: 0; width: 100%; display: grid; gap: 18px; }
+  .pill { padding: 4px 12px; border-radius: 999px; background: rgba(255,255,255,.22); font-size: .78rem; font-weight: 600; }
+  .hint { width: 100%; padding: 20px; border-radius: 22px; background: linear-gradient(135deg, rgba(250,204,21,.35), rgba(236,72,153,.35)); border: 1px solid rgba(255,255,255,.35); }
+  .loading { animation: pulse 1s infinite; } @keyframes pulse { 50% { opacity: .4; } }
+  footer { opacity: .7; font-size: .85rem; padding-bottom: 32px; }
+</style>
+</head>
+<body>
+<header class="navbar">
+  <a href="#/" class="logo">🧠 Trava Aqui AI ✨</a>
+  <nav><a href="#/professor">👩‍🏫 Professor</a><a href="#/aluno">🎓 Aluno</a></nav>
+</header>
+<main class="wrap" id="app"></main>
+<footer>Feito com 💜 e IA · Powered by AI 🤖 · © 2026</footer>
+
+<script>
+const activities = [
+  { id: "fotossintese", subject: "Biologia", emoji: "🌱", question: "Por que a fotossíntese depende da luz?",
+    expectedAnswer: "Porque a luz fornece a energia que a planta usa para transformar gás carbônico e água em glicose.",
+    hint: "💡 Pense assim: a luz fornece a ENERGIA que a planta usa para transformar gás carbônico e água em glicose! ✨" },
+  { id: "porcentagem", subject: "Matemática", emoji: "🧮", question: "Uma camiseta custava R$ 80 e entrou em promoção com 25% de desconto. Quanto ela custa agora?",
+    expectedAnswer: "R$ 60.", hint: "💡 Dica: 25% de 80 é 20, então é só fazer 80 − 20 = 60! 🚀" },
+  { id: "abolicao", subject: "História", emoji: "📜", question: "Por que a abolição da escravidão em 1888 não garantiu condições dignas para a população liberta?",
+    expectedAnswer: "Porque não houve políticas de acesso a terra, trabalho, educação ou indenização.",
+    hint: "💡 Lembre que não houve políticas de acesso a terra, trabalho e educação para os libertos! 📚" }
+];
+const app = document.getElementById("app");
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+function home() {
+  return `
+    <span class="badge">🚀 Novo · Powered by Inteligência Artificial</span>
+    <h1>Desbloqueie todo o seu potencial de aprendizado com IA ✨</h1>
+    <p>A plataforma revolucionária que transforma a forma como você estuda. 🧠💡</p>
+    <div class="stats">
+      <div class="stat">10x<small>mais aprendizado 📈</small></div>
+      <div class="stat">24/7<small>IA disponível 🤖</small></div>
+      <div class="stat">100%<small>de engajamento 🔥</small></div>
+    </div>
+    <div class="cards">
+      <a href="#/professor"><div class="glass"><span class="emoji">👩‍🏫</span><h2>Sou Professor</h2><p>Crie atividades incríveis em segundos ⚡</p></div></a>
+      <a href="#/aluno"><div class="glass"><span class="emoji">🎓</span><h2>Sou Aluno</h2><p>Aprenda de forma divertida e interativa 🎉</p></div></a>
+    </div>`;
+}
+
+function professor() {
+  return `
+    <h1>Painel do Professor 👩‍🏫</h1>
+    <form class="glass" id="new-form">
+      <h2>✨ Criar nova atividade</h2>
+      <label>📚 Matéria<input id="f-subject" placeholder="Ex: Física 🔬"></label>
+      <label>❓ Pergunta<textarea id="f-question" placeholder="Digite sua pergunta incrível aqui..."></textarea></label>
+      <label>✅ Resposta esperada<textarea id="f-answer" placeholder="A resposta correta..."></textarea></label>
+      <button class="btn" type="submit">🚀 Criar atividade</button>
+    </form>
+    <ul class="list">${activities.map((a) => `
+      <li class="glass"><span class="pill">${a.emoji} ${esc(a.subject)}</span><h2>${esc(a.question)}</h2><p>✅ ${esc(a.expectedAnswer)}</p></li>`).join("")}
+    </ul>`;
+}
+
+function aluno() {
+  return `
+    <h1>Escolha sua missão 🎯</h1>
+    <p>Cada atividade é uma oportunidade de crescer! 🌟</p>
+    <ul class="list">${activities.map((a) => `
+      <li><a href="#/aluno/${a.id}" style="text-decoration:none"><div class="glass"><span class="emoji">${a.emoji}</span><span class="pill">${esc(a.subject)}</span><h2>${esc(a.question)}</h2><span class="btn">Começar agora ➜</span></div></a></li>`).join("")}
+    </ul>`;
+}
+
+function atividade(id) {
+  const a = activities.find((x) => x.id === id);
+  if (!a) return `<p>Ops! 😅 Atividade não encontrada.</p>`;
+  return `
+    <a href="#/aluno">⬅️ Voltar</a>
+    <span class="emoji">${a.emoji}</span>
+    <span class="pill">${esc(a.subject)}</span>
+    <h1 style="font-size:2rem">${esc(a.question)}</h1>
+    <form class="glass" id="answer-form">
+      <label>✍️ Sua resposta<textarea id="answer" placeholder="Digite sua resposta aqui... 💭"></textarea></label>
+      <div class="row">
+        <button class="btn" type="submit">✅ Conferir resposta</button>
+        <button class="btn alt" type="button" id="hint-btn">💡 Me dá uma pista!</button>
+      </div>
+    </form>
+    <div id="out" style="width:100%;display:grid;gap:14px"></div>`;
+}
+
+function render() {
+  const [, section = "", id] = location.hash.split("/");
+  if (section === "professor") app.innerHTML = professor();
+  else if (section === "aluno" && id) app.innerHTML = atividade(id);
+  else if (section === "aluno") app.innerHTML = aluno();
+  else app.innerHTML = home();
+  scrollTo(0, 0);
+}
+
+app.addEventListener("submit", (e) => {
+  e.preventDefault();
+  if (e.target.id === "new-form") { alert("🎉 Atividade criada com sucesso!"); return; }
+  const out = document.getElementById("out");
+  out.innerHTML = `<div class="glass"><h2>🤔 Quase lá! Continue tentando! 💪</h2><p>Você está no caminho certo! 🌟</p></div>`;
+});
+
+app.addEventListener("click", (e) => {
+  if (e.target.id !== "hint-btn") return;
+  const [, , id] = location.hash.split("/");
+  const a = activities.find((x) => x.id === id);
+  const out = document.getElementById("out");
+  out.innerHTML = `<div class="hint loading">🤖 A IA está pensando... ✨</div>`;
+  setTimeout(() => { out.innerHTML = `<div class="hint"><h2>💡 Sua pista mágica</h2><p>${esc(a.hint)}</p></div>`; }, 900);
+});
+
+window.addEventListener("hashchange", render);
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+# Uso:
+#   docker compose up dev                 → desenvolvimento com hot reload em http://localhost:3000
+#   docker compose --profile prod up app  → build de produção em http://localhost:3000
+# As variáveis vêm de .env.local (copie de .env.example).
+
+services:
+  dev:
+    build:
+      context: .
+      target: dev
+    ports:
+      - "3000:3000"
+    env_file:
+      - path: .env.local
+        required: false
+    volumes:
+      - .:/app
+      # node_modules e .next ficam no container: os do Mac não servem para o Linux do container.
+      - /app/node_modules
+      - /app/.next
+
+  app:
+    profiles: ["prod"]
+    build:
+      context: .
+      target: runner
+    ports:
+      - "3000:3000"
+    env_file:
+      - path: .env.local
+        required: false
+    restart: unless-stopped
