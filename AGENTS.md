@@ -12,6 +12,10 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 Portal de atividades curtas para uma palestra com alunos do ensino médio. O professor cria uma atividade; o aluno responde e uma IA ajuda sem entregar a resposta. O software evolui ao vivo, no palco, a partir do que a turma pedir.
 
+## Demo ao vivo: v1 e v2
+
+**Quando o pedido for a v1 ou a v2, leia [`docs/demo-ao-vivo.md`](docs/demo-ao-vivo.md) e siga o template HTML da versão** ([`docs/templates/v1.html`](docs/templates/v1.html) ou [`docs/templates/v2.html`](docs/templates/v2.html)). O template define o visual e o comportamento. O visual genérico da v1 é proposital: não o melhore.
+
 ## Regras do produto
 
 - A IA nunca entrega a resposta esperada ao aluno. Todo prompt novo mantém essa regra.

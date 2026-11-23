@@ -28,6 +28,22 @@ pnpm dev
 
 Abra http://localhost:3000.
 
+## Rodar com Docker (Mac da palestra)
+
+Requisito: Docker Desktop. A imagem funciona em Mac com Apple Silicon e em Intel.
+
+```bash
+cp .env.example .env.local   # preencha ANTHROPIC_API_KEY e ALLOWED_DEV_ORIGINS
+docker compose up dev
+```
+
+- O código entra no container por volume: o agente edita os arquivos no Mac e o app recarrega sozinho em http://localhost:3000.
+- Para os celulares da turma abrirem o app, eles precisam estar na mesma rede do Mac. Descubra o IP do Mac (`ipconfig getifaddr en0`), coloque em `ALLOWED_DEV_ORIGINS` no `.env.local`, reinicie o container e gere o QR code de `http://<ip-do-mac>:3000`.
+- Com um único container, as atividades ficam na memória e todos os celulares veem a mesma lista. Elas somem quando o container reinicia.
+- Se editar um arquivo e o app não recarregar, coloque `WATCH_POLL_MS=1000` no `.env.local` e reinicie o container. Testado: no Windows o recarregamento só funciona assim; no Mac deve funcionar sem, mas teste no ensaio.
+- Depois de instalar uma dependência nova, reconstrua: `docker compose up dev --build`.
+- Build de produção: `docker compose --profile prod up app --build`.
+
 ## Comandos
 
 | Comando | O que faz |
