@@ -6,11 +6,13 @@ Durante a palestra, o app evolui em dois pedidos ao agente. Cada versão tem um 
 |---|---|---|---|
 | Base | (o que já está no repo) | Esqueleto neutro, sem identidade visual | Professor cria atividade; aluno responde e confere |
 | v1 | [`templates/v1.html`](templates/v1.html) | **Genérico de IA, de propósito**: degradê roxo e azul, emoji em tudo, vidro fosco, tudo centralizado e arredondado, frases de marketing | Botão **"💡 Me dá uma pista!"** na tela do aluno: uma pista única gerada pela IA |
-| v2 | [`templates/v2.html`](templates/v2.html) | **Especificado**: fundo claro, azul de acento, marca-texto amarelo, sem emoji nem degradê, hierarquia clara, pensado para celular | Três pistas em níveis, liberadas uma por tentativa; o professor revisa, edita e aprova as pistas antes de o aluno ver |
+| v2 | [`templates/v2.html`](templates/v2.html) | **Especificado, com identidade própria**: tinta escura com marca-texto amarelo, tipografia Bricolage Grotesque e Figtree, cor por matéria, a "escada de pistas" como elemento central, feedback com ícone, pensado primeiro para celular | Três pistas em níveis, liberadas uma por tentativa; o professor revisa, edita e aprova as pistas antes de o aluno ver |
 
-## Por que a v1 é feia
+## Por que a v1 é genérica
 
-A turma precisa ver a diferença entre pedir sem especificar e pedir especificando. A v1 representa o que a IA entrega quando ninguém diz como quer o resultado. A v2 representa o resultado quando a pessoa define o objetivo, o padrão visual e as regras. **Não melhore o visual da v1.** Reproduza o template como ele é.
+A turma precisa ver a diferença entre pedir sem especificar e pedir especificando. A v1 representa o que a IA entrega quando ninguém diz como quer o resultado: chamativo à primeira vista, mas igual a mil outros sites e com a pista entregando a resposta. A v2 representa o resultado quando a pessoa define o objetivo, a identidade visual e as regras: tem cara de produto, serve a turma e resolve o problema que ela apontou. **Não melhore o visual da v1.** Reproduza o template como ele é.
+
+Na v2, carregue as fontes com `next/font/google` (Bricolage Grotesque para títulos, Figtree para o texto) em vez do link do Google Fonts usado no template.
 
 ## Regras para o agente
 

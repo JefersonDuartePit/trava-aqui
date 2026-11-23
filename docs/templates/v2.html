@@ -5,210 +5,312 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Trava Aqui · template da v2</title>
 <!--
-  TEMPLATE DA V2. Design especificado: tokens de cor, tipografia e espaçamento definidos,
-  sem emoji, sem degradê, hierarquia clara e pensado para celular. Os dados são simulados.
-  A faixa "Protótipo" e os selos NOVO são só do template: não vão para o app.
+  TEMPLATE DA V2. Design especificado: identidade própria (tinta escura + marca-texto amarelo),
+  tipografia com personalidade, cor por matéria, a "escada de pistas" como elemento central,
+  pensado primeiro para celular. Os dados são simulados.
+  A faixa "Template da v2" e os selos NOVO são só do template: não vão para o app.
   Veja docs/demo-ao-vivo.md.
 -->
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&display=swap">
 <style>
+  /* ---------- tokens ---------- */
   :root {
-    --bg: #f6f7fb; --surface: #fff; --ink: #18203a; --muted: #5a6280; --line: #dde1ee;
-    --accent: #1f3fbf; --mark: #ffe45c; --ok: #1d7a45; --warn: #9a6a00; --bad: #b3261e;
-    --radius: 12px; --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --ink: #121833; --ink-2: #232b52; --paper: #f4f6fb; --surface: #ffffff; --line: #e2e6f0;
+    --muted: #5b6380; --accent: #2f54eb; --accent-soft: #e9eeff; --mark: #ffe14d;
+    --ok: #128a5a; --ok-soft: #e3f6ec; --warn: #a86b00; --warn-soft: #fff4d6; --bad: #c2362b; --bad-soft: #fde8e6;
+    --bio: #12a06a; --mat: #2f54eb; --his: #e0573b; --fis: #0f8fa8;
+    --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+    --body: "Figtree", "Segoe UI", system-ui, sans-serif;
+    --r-sm: 10px; --r-md: 16px; --r-lg: 24px;
+    --shadow: 0 1px 2px rgba(18,24,51,.06), 0 8px 24px rgba(18,24,51,.06);
   }
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.55 var(--font); }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 400 17px/1.55 var(--body); -webkit-font-smoothing: antialiased; }
   a { color: var(--accent); }
-  .proto { background: var(--ink); color: #fff; font-size: .82rem; padding: 6px 16px; text-align: center; }
-  .topbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--line); background: var(--surface); }
-  .brand { font-weight: 800; font-size: 1.2rem; color: var(--ink); text-decoration: none; }
-  .brand span { background: linear-gradient(transparent 55%, var(--mark) 55%); }
-  .nav { display: flex; gap: 14px; font-size: .95rem; }
-  .nav a[aria-current="page"] { font-weight: 700; text-decoration: none; }
-  .container { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; display: grid; gap: 20px; }
-  h1, h2 { margin: 0; line-height: 1.2; } h1 { font-size: 1.8rem; } h2 { font-size: 1.2rem; }
+  h1, h2, h3 { font-family: var(--display); margin: 0; line-height: 1.12; letter-spacing: -.01em; text-wrap: balance; }
   p { margin: 0; }
+  mark { background: linear-gradient(transparent 58%, var(--mark) 58%); color: inherit; padding: 0 2px; }
+  :focus-visible { outline: 3px solid var(--mark); outline-offset: 2px; border-radius: 6px; }
+
+  /* ---------- moldura ---------- */
+  .proto { background: #000; color: #fff; font-size: .78rem; padding: 6px 16px; text-align: center; }
+  .new { font: 700 .66rem/1 var(--body); letter-spacing: .06em; background: var(--mark); color: var(--ink); padding: 3px 6px; border-radius: 4px; vertical-align: 2px; }
+  .topbar { position: sticky; top: 0; z-index: 5; display: flex; justify-content: space-between; align-items: center; gap: 12px;
+            padding: 12px max(16px, calc((100% - 1080px) / 2)); background: rgba(244,246,251,.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); font: 800 1.15rem var(--display); }
+  .brand-mark { width: 32px; height: 32px; border-radius: 9px; background: var(--ink); color: var(--mark); display: grid; place-items: center; font: 800 1rem var(--display); }
+  .seg { display: flex; padding: 4px; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; }
+  .seg a { text-decoration: none; color: var(--muted); font-weight: 600; font-size: .92rem; padding: 6px 14px; border-radius: 999px; }
+  .seg a[aria-current="page"] { background: var(--ink); color: #fff; }
+  .page { max-width: 1080px; margin: 0 auto; padding: 28px 16px 120px; display: grid; gap: 24px; }
+
+  /* ---------- peças ---------- */
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); padding: 20px; box-shadow: var(--shadow); display: grid; gap: 12px; align-content: start; min-width: 0; }
+  .eyebrow { font: 700 .74rem/1 var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .chip { justify-self: start; display: inline-flex; align-items: center; gap: 6px; font: 700 .78rem/1 var(--body); padding: 6px 10px; border-radius: 999px; background: color-mix(in srgb, var(--c, var(--accent)) 12%, white); color: var(--c, var(--accent)); }
+  .chip::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
   .muted { color: var(--muted); }
-  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; display: grid; gap: 10px; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
-  .choice { text-decoration: none; color: inherit; } .choice:hover .card { border-color: var(--accent); }
-  .tag { justify-self: start; font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--accent); }
+  .small { font-size: .88rem; }
   .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-  label { display: grid; gap: 6px; font-weight: 600; }
-  input, textarea { font: inherit; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); }
-  textarea { min-height: 90px; resize: vertical; }
-  button { font: inherit; font-weight: 700; padding: 10px 18px; border: 0; border-radius: 999px; background: var(--accent); color: #fff; cursor: pointer; }
-  button.ghost { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
-  button:disabled { opacity: .5; cursor: not-allowed; }
-  :focus-visible { outline: 3px solid var(--mark); outline-offset: 2px; }
+  .btn { font: 700 1rem var(--body); border: 0; cursor: pointer; padding: 12px 20px; border-radius: 12px; background: var(--ink); color: #fff; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+  .btn:hover { background: var(--ink-2); }
+  .btn.primary { background: var(--accent); } .btn.primary:hover { background: #2445cf; }
+  .btn.ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--line); }
+  .btn.ghost:hover { border-color: var(--ink); }
+  .btn.sm { padding: 8px 12px; font-size: .88rem; border-radius: 10px; }
+  .btn:disabled { opacity: .45; cursor: not-allowed; }
+  label { display: grid; gap: 6px; font-weight: 600; font-size: .95rem; }
+  input, textarea { font: inherit; font-weight: 400; padding: 12px 14px; border: 1.5px solid var(--line); border-radius: 12px; background: var(--surface); color: var(--ink); width: 100%; }
+  input:focus, textarea:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 4px var(--accent-soft); }
+  textarea { min-height: 96px; resize: vertical; }
+  .hint-text { font-weight: 400; color: var(--muted); font-size: .85rem; }
+
+  /* ---------- home ---------- */
+  .hero { background: var(--ink); color: #fff; border-radius: var(--r-lg); padding: clamp(24px, 5vw, 48px); display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; align-items: center; overflow: hidden; position: relative; }
+  .hero h1 { font-size: clamp(2.1rem, 5.4vw, 3.6rem); font-weight: 800; }
+  .hero mark { color: var(--ink); background: var(--mark); padding: 0 8px; border-radius: 6px; }
+  .hero p { color: #c9cfe6; font-size: 1.1rem; max-width: 46ch; }
+  .hero .eyebrow { color: var(--mark); }
+  .hero .btn.ghost { color: #fff; border-color: #3a4372; } .hero .btn.ghost:hover { border-color: #fff; }
+  .hero .btn.primary { background: var(--mark); color: var(--ink); } .hero .btn.primary:hover { background: #ffd61a; }
+  .hero-copy { display: grid; gap: 18px; }
+  .ladder-demo { background: var(--ink-2); border: 1px solid #343d6b; border-radius: var(--r-md); padding: 18px; display: grid; gap: 10px; }
+  .ladder-demo .q { font-weight: 600; }
+  .rung { display: grid; grid-template-columns: 28px 1fr; gap: 10px; align-items: start; padding: 10px 12px; border-radius: 12px; background: #2b3463; font-size: .92rem; }
+  .rung .n { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font: 800 .85rem var(--display); background: var(--mark); color: var(--ink); }
+  .rung.locked { opacity: .5; } .rung.locked .n { background: #46507f; color: #fff; }
+  .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .step-n { width: 36px; height: 36px; border-radius: 10px; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; font: 800 1rem var(--display); }
+
+  /* ---------- professor ---------- */
+  .dash { display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: 24px; align-items: start; }
+  .stats { display: flex; gap: 10px; flex-wrap: wrap; }
+  .stat { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 8px 14px; font-size: .9rem; color: var(--muted); }
+  .stat b { font: 800 1.2rem var(--display); color: var(--ink); margin-right: 4px; }
+  .act { display: grid; grid-template-columns: 6px 1fr; padding: 0; overflow: hidden; gap: 0; }
+  .act .stripe { background: var(--c, var(--accent)); }
+  .act .body { padding: 16px 18px; display: grid; gap: 8px; }
+  .act h3 { font-size: 1.08rem; font-family: var(--body); font-weight: 700; letter-spacing: 0; }
+  .status { justify-self: start; font: 700 .76rem/1 var(--body); padding: 6px 10px; border-radius: 999px; }
+  .status.ok { background: var(--ok-soft); color: var(--ok); } .status.pending { background: var(--warn-soft); color: var(--warn); }
   .list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
-  .status { font-size: .8rem; font-weight: 700; padding: 2px 10px; border-radius: 999px; border: 1px solid; }
-  .status.ok { color: var(--ok); } .status.pending { color: var(--warn); }
-  .hint { border-left: 4px solid var(--mark); padding: 8px 12px; background: #fffbe0; border-radius: 0 8px 8px 0; }
-  .hint.locked { background: transparent; color: var(--muted); border-left-color: var(--line); }
-  .hint b { display: block; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
-  .feedback { border-radius: var(--radius); padding: 14px 16px; border: 1px solid var(--line); background: var(--surface); }
-  .feedback strong { display: block; }
-  .feedback[data-v="certo"] strong { color: var(--ok); } .feedback[data-v="quase"] strong { color: var(--warn); } .feedback[data-v="ainda-nao"] strong { color: var(--bad); }
-  .note { font-size: .88rem; color: var(--muted); }
-  .new { font-size: .7rem; font-weight: 800; background: var(--mark); color: var(--ink); padding: 1px 7px; border-radius: 4px; margin-left: 6px; vertical-align: 2px; }
-  .spinner { display: inline-block; width: 16px; height: 16px; border: 3px solid var(--line); border-top-color: var(--accent); border-radius: 50%; animation: spin .8s linear infinite; vertical-align: -3px; margin-right: 8px; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  @media (prefers-reduced-motion: reduce) { .spinner { animation: none; } }
+  .list a.act { text-decoration: none; color: inherit; } .list a.act:hover { border-color: var(--ink); }
+
+  .ladder { display: grid; gap: 0; position: relative; }
+  .ladder-item { display: grid; grid-template-columns: 44px 1fr; gap: 14px; position: relative; padding-bottom: 18px; }
+  .ladder-item:not(:last-child)::before { content: ""; position: absolute; left: 21px; top: 44px; bottom: 0; width: 2px; background: var(--line); }
+  .lvl { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; font: 800 1.1rem var(--display); background: var(--mark); color: var(--ink); }
+  .lvl.l2 { background: #ffd0a8; } .lvl.l3 { background: #ffb3a8; }
+  .lvl-name { font: 700 .74rem/1 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .guard { font-size: .82rem; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+  .guard.ok { color: var(--ok); } .guard.bad { color: var(--bad); }
+  .bar { position: sticky; bottom: 0; z-index: 4; margin: 0 -16px; padding: 12px 16px; background: rgba(255,255,255,.94); backdrop-filter: blur(8px); border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+  .skeleton { height: 14px; border-radius: 6px; background: linear-gradient(90deg, #eef1f7 0%, #f8f9fc 50%, #eef1f7 100%); background-size: 200% 100%; animation: shimmer 1.2s infinite; }
+  @keyframes shimmer { to { background-position: -200% 0; } }
+
+  /* ---------- aluno ---------- */
+  .play { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 360px); gap: 24px; align-items: start; }
+  .question h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); }
+  .meter { display: flex; gap: 6px; }
+  .meter span { flex: 1; height: 8px; border-radius: 4px; background: var(--line); }
+  .meter span.on { background: var(--mark); }
+  .hint-card { display: grid; grid-template-columns: 36px 1fr; gap: 12px; padding: 14px; border-radius: 14px; border: 1.5px dashed var(--line); background: var(--paper); }
+  .hint-card .lvl { width: 36px; height: 36px; border-radius: 10px; font-size: .95rem; }
+  .hint-card.open { border-style: solid; border-color: #f3d54a; background: #fffbe3; animation: reveal .35s ease-out; }
+  .hint-card.locked .lvl { background: var(--line); color: var(--muted); }
+  @keyframes reveal { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  .feedback { display: grid; grid-template-columns: 40px 1fr; gap: 12px; padding: 16px; border-radius: var(--r-md); animation: reveal .3s ease-out; }
+  .feedback .icon { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; color: #fff; }
+  .feedback strong { font: 800 1.1rem var(--display); display: block; }
+  .feedback[data-v="certo"] { background: var(--ok-soft); } .feedback[data-v="certo"] .icon { background: var(--ok); }
+  .feedback[data-v="quase"] { background: var(--warn-soft); } .feedback[data-v="quase"] .icon { background: var(--warn); }
+  .feedback[data-v="ainda-nao"] { background: var(--bad-soft); } .feedback[data-v="ainda-nao"] .icon { background: var(--bad); }
+  .back { font-weight: 600; text-decoration: none; justify-self: start; }
+
+  @media (max-width: 860px) {
+    .hero, .dash, .play { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
 </style>
 </head>
 <body>
-<div class="proto">Template da v2 · dados simulados, sem IA real · <span class="new">NOVO</span> marca o que a v2 acrescenta à base</div>
+<div class="proto">Template da v2 · dados simulados, sem IA real · <span class="new">NOVO</span> marca o que a v2 acrescenta</div>
 <header class="topbar">
-  <a href="#/" class="brand">Trava <span>Aqui</span></a>
-  <nav class="nav" aria-label="Principal">
+  <a href="#/" class="brand"><span class="brand-mark">T?</span>Trava Aqui</a>
+  <nav class="seg" aria-label="Perfil">
     <a href="#/professor" data-nav="professor">Professor</a>
     <a href="#/aluno" data-nav="aluno">Aluno</a>
   </nav>
 </header>
-<main class="container" id="app"></main>
+<main class="page" id="app"></main>
 
 <script>
 // ---------- dados simulados ----------
+const SUBJECT_COLOR = { "Biologia": "var(--bio)", "Matemática": "var(--mat)", "História": "var(--his)" };
+const colorOf = (subject) => SUBJECT_COLOR[subject] || "var(--fis)";
+
 const state = {
   activities: [
-    {
-      id: "fotossintese", subject: "Biologia", status: "aprovada",
+    { id: "fotossintese", subject: "Biologia", status: "aprovada",
       question: "Por que a fotossíntese depende da luz?",
       expectedAnswer: "Porque a luz fornece a energia que a planta usa para transformar gás carbônico e água em glicose.",
       keywords: { certo: ["energia"], quase: ["luz", "sol", "glicose"] },
-      hints: [
-        "Toda transformação precisa de energia. De onde a planta tira a dela?",
-        "A planta transforma gás carbônico e água em outra coisa. O que ela produz?",
-        "Junte as duas ideias: o que a luz fornece para essa transformação acontecer?"
-      ]
-    },
-    {
-      id: "porcentagem", subject: "Matemática", status: "aprovada",
+      hints: ["Toda transformação precisa de energia. De onde a planta tira a dela?",
+              "A planta transforma gás carbônico e água em outra coisa. O que ela produz?",
+              "Junte as duas ideias: o que a luz fornece para essa transformação acontecer?"] },
+    { id: "porcentagem", subject: "Matemática", status: "aprovada",
       question: "Uma camiseta custava R$ 80 e entrou em promoção com 25% de desconto. Quanto ela custa agora?",
-      expectedAnswer: "R$ 60.",
-      keywords: { certo: ["60"], quase: ["20"] },
-      hints: [
-        "25% é a mesma coisa que uma fração simples. Qual?",
-        "Quanto é um quarto de 80? Esse é o valor do desconto.",
-        "Agora tire o desconto do preço original."
-      ]
-    },
-    {
-      id: "abolicao", subject: "História", status: "revisao",
+      expectedAnswer: "R$ 60.", keywords: { certo: ["60"], quase: ["20"] },
+      hints: ["25% é a mesma coisa que uma fração simples. Qual?",
+              "Quanto é um quarto de 80? Esse é o valor do desconto.",
+              "Agora tire o desconto do preço original."] },
+    { id: "abolicao", subject: "História", status: "revisao",
       question: "Por que a abolição da escravidão em 1888 não garantiu condições dignas para a população liberta?",
       expectedAnswer: "Porque não houve políticas de acesso a terra, trabalho, educação ou indenização.",
       keywords: { certo: ["terra", "política", "politica"], quase: ["trabalho", "educação", "educacao"] },
-      hints: [
-        "Pense no dia seguinte à abolição. Do que uma pessoa precisava para viver?",
-        "O governo criou alguma forma de garantir terra, trabalho ou estudo para quem foi libertado?",
-        "Compare: o que a lei acabou e o que ela deixou de fazer."
-      ]
-    }
+      hints: ["Pense no dia seguinte à abolição. Do que uma pessoa precisava para viver?",
+              "O governo criou alguma forma de garantir terra, trabalho ou estudo para quem foi libertado?",
+              "Compare: o que a lei acabou e o que ela deixou de fazer."] }
   ],
-  student: {} // por atividade: { attempts, hintsShown, answer, feedback }
+  student: {}
 };
-
-const ALT_HINTS = [
-  "Releia a pergunta e sublinhe a palavra mais importante. O que ela pede?",
-  "Lembre de um exemplo do dia a dia que tenha a ver com isso.",
-  "Tente explicar para um colega em uma frase. O que você diria primeiro?"
-];
-
+const ALT_HINTS = ["Releia a pergunta e sublinhe a palavra mais importante. O que ela pede?",
+                   "Lembre de um exemplo do dia a dia que tenha a ver com isso.",
+                   "Tente explicar para um colega em uma frase. O que você diria primeiro?"];
+const LEVELS = ["Leve", "Média", "Direta"];
 const VERDICT = { certo: "Isso aí!", quase: "Quase lá", "ainda-nao": "Ainda não" };
-const FEEDBACK = {
-  certo: "Você chegou na ideia principal. Mandou bem.",
-  quase: "Você está no caminho. Falta ligar essa ideia ao que a pergunta pede.",
-  "ainda-nao": "Ainda não é isso. Que tal pedir uma pista?"
+const FEEDBACK = { certo: "Você chegou na ideia principal.", quase: "Você está no caminho. Falta ligar essa ideia ao que a pergunta pede.", "ainda-nao": "Ainda não é isso. Tente de novo ou suba um degrau na escada de pistas." };
+const ICON = {
+  certo: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5 9-10"/></svg>',
+  quase: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12h14"/></svg>',
+  "ainda-nao": '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 7v6M12 17h.01"/></svg>'
 };
+const LOCK = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>';
 
 // ---------- utilitários ----------
 const app = document.getElementById("app");
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const find = (id) => state.activities.find((a) => a.id === id);
 const progress = (id) => (state.student[id] ??= { attempts: 0, hintsShown: 0, answer: "", feedback: null });
-const go = (hash) => { location.hash = hash; };
-
-function evaluate(activity, answer) {
-  const text = answer.toLowerCase();
-  if (activity.keywords.certo.some((k) => text.includes(k))) return "certo";
-  if (activity.keywords.quase.some((k) => text.includes(k))) return "quase";
+const chip = (subject) => `<span class="chip" style="--c:${colorOf(subject)}">${esc(subject)}</span>`;
+function evaluate(a, answer) {
+  const t = answer.toLowerCase();
+  if (a.keywords.certo.some((k) => t.includes(k))) return "certo";
+  if (a.keywords.quase.some((k) => t.includes(k))) return "quase";
   return "ainda-nao";
 }
+// Simula a checagem "a pista não entrega a resposta": acusa se a pista contém a palavra-chave da resposta.
+const givesAway = (a, hint) => a.keywords.certo.some((k) => hint.toLowerCase().includes(k));
 
 // ---------- telas ----------
 function home() {
   return `
-    <h1>Travou? A gente destrava junto.</h1>
-    <p class="muted">O professor cria uma atividade curta. O aluno tenta, pede pistas aos poucos e a IA confere, sem entregar a resposta.</p>
-    <div class="grid">
-      <a href="#/professor" class="choice"><div class="card"><span class="tag">Professor</span><h2>Criar e revisar atividades</h2><p class="muted">A IA sugere três pistas e você aprova antes de o aluno ver.</p></div></a>
-      <a href="#/aluno" class="choice"><div class="card"><span class="tag">Aluno</span><h2>Responder uma atividade</h2><p class="muted">Tente, peça uma pista, tente de novo.</p></div></a>
-    </div>`;
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow">Para professores e alunos do ensino médio</span>
+        <h1>Travou? A pista vem <mark>quando você tenta.</mark></h1>
+        <p>O professor cria a atividade e aprova as pistas. O aluno tenta, sobe um degrau de cada vez e chega na resposta com as próprias palavras.</p>
+        <div class="row">
+          <a class="btn primary" href="#/aluno">Responder uma atividade</a>
+          <a class="btn ghost" href="#/professor">Sou professor</a>
+        </div>
+      </div>
+      <div class="ladder-demo" aria-hidden="true">
+        <span class="eyebrow" style="color:#9aa3cc">Escada de pistas</span>
+        <p class="q">Por que a fotossíntese depende da luz?</p>
+        <div class="rung"><span class="n">1</span><span>Toda transformação precisa de energia. De onde a planta tira a dela?</span></div>
+        <div class="rung locked"><span class="n">2</span><span>Libera depois da próxima tentativa</span></div>
+        <div class="rung locked"><span class="n">3</span><span>Libera depois da próxima tentativa</span></div>
+      </div>
+    </section>
+    <section class="steps">
+      <div class="card"><span class="step-n">1</span><h3>O professor cria</h3><p class="muted">Pergunta curta e a resposta esperada, que o aluno nunca vê.</p></div>
+      <div class="card"><span class="step-n">2</span><h3>A IA sugere, o professor aprova</h3><p class="muted">Três pistas, da mais leve à mais direta. Nada vai para o aluno sem revisão.</p></div>
+      <div class="card"><span class="step-n">3</span><h3>O aluno destrava</h3><p class="muted">Cada tentativa libera um degrau. A resposta continua sendo dele.</p></div>
+    </section>`;
 }
 
 function professor() {
+  const pending = state.activities.filter((a) => a.status !== "aprovada").length;
   const items = state.activities.map((a) => `
-    <li class="card">
-      <div class="row"><span class="tag">${esc(a.subject)}</span>
-        ${a.status === "aprovada"
-          ? '<span class="status ok">Pistas aprovadas</span>'
-          : '<span class="status pending">Pistas aguardando revisão</span>'}
+    <li><a class="card act" href="#/professor/${a.id}" style="--c:${colorOf(a.subject)}">
+      <span class="stripe"></span>
+      <div class="body">
+        <div class="row">${chip(a.subject)}${a.status === "aprovada" ? '<span class="status ok">Publicada</span>' : '<span class="status pending">Revisar pistas</span>'}</div>
+        <h3>${esc(a.question)}</h3>
+        <p class="muted small">Resposta esperada: ${esc(a.expectedAnswer)}</p>
       </div>
-      <strong>${esc(a.question)}</strong>
-      <p class="note">Resposta esperada: ${esc(a.expectedAnswer)}</p>
-      <div class="row"><a href="#/professor/${a.id}">${a.status === "aprovada" ? "Ver pistas" : "Revisar pistas"}</a></div>
-    </li>`).join("");
+    </a></li>`).join("");
   return `
-    <h1>Área do professor</h1>
-    <form class="card" id="new-form">
-      <h2>Nova atividade</h2>
-      <label>Matéria<input id="f-subject" required placeholder="Física"></label>
-      <label>Pergunta para o aluno<textarea id="f-question" required placeholder="O que é inércia?"></textarea></label>
-      <label>Resposta esperada (o aluno não vê)<textarea id="f-answer" required placeholder="A tendência de um corpo manter seu estado de movimento."></textarea></label>
-      <div class="row"><button type="submit">Criar e gerar pistas com IA</button><span class="new">NOVO</span></div>
-    </form>
-    <h2>Atividades</h2>
-    <ul class="list">${items}</ul>`;
+    <div class="row" style="justify-content:space-between">
+      <h1>Suas atividades</h1>
+      <div class="stats"><span class="stat"><b>${state.activities.length - pending}</b>publicadas</span><span class="stat"><b>${pending}</b>para revisar</span></div>
+    </div>
+    <div class="dash">
+      <form class="card" id="new-form">
+        <h2>Nova atividade</h2>
+        <label>Matéria<input id="f-subject" required placeholder="Física"></label>
+        <label>Pergunta para o aluno<textarea id="f-question" required placeholder="O que é inércia?"></textarea></label>
+        <label>Resposta esperada <span class="hint-text">O aluno não vê. A IA usa para conferir e para não entregar nas pistas.</span>
+          <textarea id="f-answer" required placeholder="A tendência de um corpo manter seu estado de movimento."></textarea></label>
+        <button class="btn primary" type="submit">Criar e gerar pistas <span class="new">NOVO</span></button>
+      </form>
+      <ul class="list">${items}</ul>
+    </div>`;
 }
 
 function review(id) {
   const a = find(id);
   if (!a) return notFound();
   const approved = a.status === "aprovada";
-  const fields = a.hints.map((h, i) => `
-    <label>Pista ${i + 1}${i === 0 ? " · a mais leve" : i === 2 ? " · a mais direta" : ""}
-      <textarea id="hint-${i}" ${approved ? "readonly" : ""}>${esc(h)}</textarea>
-    </label>
-    ${approved ? "" : `<div class="row"><button type="button" class="ghost" data-regen="${i}">Pedir outra versão à IA</button></div>`}`).join("");
+  const rungs = a.hints.map((h, i) => `
+    <div class="ladder-item">
+      <span class="lvl l${i + 1}">${i + 1}</span>
+      <div class="card" style="box-shadow:none">
+        <div class="row" style="justify-content:space-between"><span class="lvl-name">Pista ${LEVELS[i].toLowerCase()}</span>
+          <span class="guard ${givesAway(a, h) ? "bad" : "ok"}" id="guard-${i}">${givesAway(a, h) ? "Pode entregar a resposta" : "Não entrega a resposta"}</span></div>
+        <textarea id="hint-${i}" data-i="${i}" ${approved ? "readonly" : ""}>${esc(h)}</textarea>
+        ${approved ? "" : `<button type="button" class="btn ghost sm" data-regen="${i}">Pedir outra versão</button>`}
+      </div>
+    </div>`).join("");
   return `
-    <a href="#/professor">← Atividades</a>
-    <div class="card"><span class="tag">${esc(a.subject)}</span><h1>${esc(a.question)}</h1>
-      <p class="note">Resposta esperada: ${esc(a.expectedAnswer)}</p></div>
-    <form class="card" id="review-form">
-      <div class="row"><h2>Sequência de pistas</h2><span class="new">NOVO</span></div>
-      <p class="muted">A IA sugeriu três pistas, da mais leve à mais direta. Nenhuma pode entregar a resposta. Edite o que quiser antes de publicar.</p>
-      ${fields}
-      ${approved
-        ? '<p class="status ok" style="justify-self:start">Publicada para os alunos</p><div class="row"><button type="button" class="ghost" id="reopen">Editar de novo</button></div>'
-        : '<div class="row"><button type="submit">Aprovar e publicar</button></div>'}
+    <a class="back" href="#/professor">← Suas atividades</a>
+    <div class="card">${chip(a.subject)}<h1 style="font-size:clamp(1.5rem,3.6vw,2rem)">${esc(a.question)}</h1>
+      <p class="muted small">Resposta esperada: ${esc(a.expectedAnswer)}</p></div>
+    <form id="review-form" style="display:grid;gap:16px">
+      <div><h2>Escada de pistas <span class="new">NOVO</span></h2>
+        <p class="muted">A IA sugeriu três degraus, do mais leve ao mais direto. Edite o que quiser. Nada aparece para o aluno antes da sua aprovação.</p></div>
+      <div class="ladder">${rungs}</div>
+      <div class="bar">
+        ${approved
+          ? '<span class="status ok">Publicada para os alunos</span><button type="button" class="btn ghost" id="reopen">Editar de novo</button>'
+          : '<span class="muted small">3 pistas prontas para revisão</span><button type="submit" class="btn primary">Aprovar e publicar</button>'}
+      </div>
     </form>`;
 }
 
-function generating() {
-  return `<div class="card"><p><span class="spinner"></span>A IA está escrevendo três pistas, da mais leve à mais direta…</p></div>`;
+function generating(subject) {
+  const sk = [1, 2, 3].map((i) => `
+    <div class="ladder-item"><span class="lvl l${i}">${i}</span>
+      <div class="card" style="box-shadow:none"><div class="skeleton" style="width:30%"></div><div class="skeleton"></div><div class="skeleton" style="width:80%"></div></div></div>`).join("");
+  return `<div><h2>Escrevendo três pistas de ${esc(subject)}…</h2><p class="muted">Da mais leve à mais direta, sem entregar a resposta.</p></div><div class="ladder">${sk}</div>`;
 }
 
 function alunoList() {
   const visible = state.activities.filter((a) => a.status === "aprovada");
-  const items = visible.map((a) => `
-    <li><a href="#/aluno/${a.id}" class="choice"><div class="card"><span class="tag">${esc(a.subject)}</span><strong>${esc(a.question)}</strong></div></a></li>`).join("");
+  const items = visible.map((a) => {
+    const p = state.student[a.id];
+    const tag = p?.feedback === "certo" ? '<span class="status ok">Resolvida</span>' : p ? '<span class="status pending">Em andamento</span>' : "";
+    return `<li><a class="card act" href="#/aluno/${a.id}" style="--c:${colorOf(a.subject)}"><span class="stripe"></span>
+      <div class="body"><div class="row">${chip(a.subject)}${tag}</div><h3>${esc(a.question)}</h3><p class="muted small">3 pistas disponíveis · cerca de 2 min</p></div></a></li>`;
+  }).join("");
   return `
-    <h1>Escolha uma atividade</h1>
-    ${visible.length ? "" : '<p class="muted">Nenhuma atividade publicada ainda.</p>'}
-    <ul class="list">${items}</ul>
-    <p class="note">Só aparecem as atividades com pistas aprovadas pelo professor.</p>`;
+    <div><span class="eyebrow">Atividades</span><h1>O que vamos destravar hoje?</h1></div>
+    ${visible.length ? `<ul class="list">${items}</ul>` : '<div class="card"><p class="muted">Nenhuma atividade publicada ainda. Assim que o professor aprovar, ela aparece aqui.</p></div>'}`;
 }
 
 function atividade(id) {
@@ -217,29 +319,35 @@ function atividade(id) {
   const p = progress(id);
   const canHint = p.hintsShown < 3 && p.attempts > p.hintsShown;
   const hints = a.hints.map((h, i) => i < p.hintsShown
-    ? `<div class="hint"><b>Pista ${i + 1}</b>${esc(h)}</div>`
-    : `<div class="hint locked"><b>Pista ${i + 1}</b>${i === p.hintsShown ? "Libera depois que você tentar responder." : "Ainda bloqueada."}</div>`).join("");
-  const feedback = p.feedback
-    ? `<div class="feedback" data-v="${p.feedback}" role="status"><strong>${VERDICT[p.feedback]}</strong>${FEEDBACK[p.feedback]}</div>` : "";
+    ? `<div class="hint-card open"><span class="lvl l${i + 1}">${i + 1}</span><div><span class="lvl-name">Pista ${LEVELS[i].toLowerCase()}</span><p>${esc(h)}</p></div></div>`
+    : `<div class="hint-card locked"><span class="lvl">${LOCK}</span><div><span class="lvl-name">Pista ${LEVELS[i].toLowerCase()}</span><p class="muted small">${i === p.hintsShown ? (canHint ? "Pronta para abrir." : "Tente responder para liberar.") : "Bloqueada."}</p></div></div>`).join("");
+  const meter = [0, 1, 2].map((i) => `<span class="${i < p.hintsShown ? "on" : ""}"></span>`).join("");
+  const fb = p.feedback ? `<div class="feedback" data-v="${p.feedback}" role="status"><span class="icon">${ICON[p.feedback]}</span><div><strong>${VERDICT[p.feedback]}</strong><p>${FEEDBACK[p.feedback]}</p></div></div>` : "";
   return `
-    <a href="#/aluno">← Atividades</a>
-    <div class="card"><span class="tag">${esc(a.subject)}</span><h1>${esc(a.question)}</h1></div>
-    <form class="card" id="answer-form">
-      <label>Sua resposta<textarea id="answer" placeholder="Escreva com suas palavras">${esc(p.answer)}</textarea></label>
-      <div class="row">
-        <button type="submit">Conferir resposta</button>
-        <button type="button" class="ghost" id="hint-btn" ${canHint ? "" : "disabled"}>Me dá uma pista</button>
-        <span class="new">NOVO</span>
+    <a class="back" href="#/aluno">← Atividades</a>
+    <div class="play">
+      <div style="display:grid;gap:16px;min-width:0">
+        <div class="card question">${chip(a.subject)}<h1>${esc(a.question)}</h1></div>
+        <form class="card" id="answer-form">
+          <label>Sua resposta<textarea id="answer" placeholder="Escreva com as suas palavras">${esc(p.answer)}</textarea></label>
+          <div class="row"><button class="btn primary" type="submit">Conferir resposta</button>
+            <span class="muted small">${p.attempts} ${p.attempts === 1 ? "tentativa" : "tentativas"}</span></div>
+        </form>
+        ${fb}
       </div>
-      <p class="note">Tentativas: ${p.attempts} · pistas usadas: ${p.hintsShown} de 3</p>
-    </form>
-    ${feedback}
-    <div class="card"><h2>Pistas</h2>${hints}</div>
-    <div class="row"><button type="button" class="ghost" id="reset">Recomeçar esta atividade</button></div>`;
+      <aside class="card" aria-label="Escada de pistas">
+        <div class="row" style="justify-content:space-between"><h2>Escada de pistas</h2><span class="new">NOVO</span></div>
+        <div class="meter" aria-label="${p.hintsShown} de 3 pistas usadas">${meter}</div>
+        <p class="muted small">Cada tentativa libera o próximo degrau.</p>
+        ${hints}
+        <button class="btn ghost" type="button" id="hint-btn" ${canHint ? "" : "disabled"}>${p.hintsShown >= 3 ? "Você usou as 3 pistas" : `Abrir pista ${p.hintsShown + 1}`}</button>
+        <button class="btn ghost sm" type="button" id="reset" style="justify-self:start">Recomeçar</button>
+      </aside>
+    </div>`;
 }
 
 function notFound() {
-  return `<p>Essa atividade não está disponível.</p><a href="#/">Voltar ao início</a>`;
+  return `<div class="card"><p>Essa atividade não está disponível.</p><a href="#/">Voltar ao início</a></div>`;
 }
 
 // ---------- roteamento e eventos ----------
@@ -254,43 +362,34 @@ function render() {
   else if (section === "aluno" && id) app.innerHTML = atividade(id);
   else if (section === "aluno") app.innerHTML = alunoList();
   else app.innerHTML = home();
-  window.scrollTo(0, 0);
 }
 
 app.addEventListener("submit", (event) => {
   event.preventDefault();
   const form = event.target;
   const [, , id] = location.hash.split("/");
-
   if (form.id === "new-form") {
     const subject = document.getElementById("f-subject").value.trim();
     const question = document.getElementById("f-question").value.trim();
     const expectedAnswer = document.getElementById("f-answer").value.trim();
+    const words = expectedAnswer.toLowerCase().split(/[^a-zà-ú0-9]+/).filter((w) => w.length > 5);
     const newId = "atividade-" + Date.now();
-    const words = expectedAnswer.toLowerCase().split(/\W+/).filter((w) => w.length > 5);
-    state.activities.unshift({
-      id: newId, subject, question, expectedAnswer, status: "revisao",
+    state.activities.unshift({ id: newId, subject, question, expectedAnswer, status: "revisao",
       keywords: { certo: words.slice(0, 2), quase: words.slice(2, 5) },
-      hints: [
-        `O que a pergunta está pedindo, com as suas palavras?`,
-        `Que conteúdo de ${subject} que você já estudou tem a ver com isso?`,
-        `Pense num exemplo concreto e explique o que acontece nele.`
-      ]
-    });
-    app.innerHTML = generating();
-    setTimeout(() => go(`#/professor/${newId}`), 1400);
+      hints: ["O que a pergunta está pedindo, com as suas palavras?",
+              `Que conteúdo de ${subject} que você já estudou tem a ver com isso?`,
+              "Pense num exemplo concreto e explique o que acontece nele."] });
+    app.innerHTML = generating(subject);
+    setTimeout(() => { location.hash = `#/professor/${newId}`; }, 1500);
   }
-
   if (form.id === "review-form") {
     const a = find(id);
-    a.hints = a.hints.map((_, i) => document.getElementById(`hint-${i}`).value.trim() || a.hints[i]);
+    a.hints = a.hints.map((h, i) => document.getElementById(`hint-${i}`).value.trim() || h);
     a.status = "aprovada";
     render();
   }
-
   if (form.id === "answer-form") {
-    const a = find(id);
-    const p = progress(id);
+    const a = find(id), p = progress(id);
     p.answer = document.getElementById("answer").value;
     if (!p.answer.trim()) return;
     p.attempts += 1;
@@ -299,25 +398,32 @@ app.addEventListener("submit", (event) => {
   }
 });
 
+app.addEventListener("input", (event) => {
+  const i = event.target.dataset.i;
+  if (i === undefined) return;
+  const [, , id] = location.hash.split("/");
+  const bad = givesAway(find(id), event.target.value);
+  const guard = document.getElementById(`guard-${i}`);
+  guard.className = `guard ${bad ? "bad" : "ok"}`;
+  guard.textContent = bad ? "Pode entregar a resposta" : "Não entrega a resposta";
+});
+
 app.addEventListener("click", (event) => {
   const [, , id] = location.hash.split("/");
-  const target = event.target;
+  const target = event.target.closest("button");
+  if (!target) return;
   if (target.dataset.regen !== undefined) {
     const i = Number(target.dataset.regen);
     const field = document.getElementById(`hint-${i}`);
     field.value = ALT_HINTS[(ALT_HINTS.indexOf(field.value) + 1 + i) % ALT_HINTS.length];
+    field.dispatchEvent(new Event("input", { bubbles: true }));
   }
   if (target.id === "reopen") { find(id).status = "revisao"; render(); }
-  if (target.id === "hint-btn") {
-    const p = progress(id);
-    p.answer = document.getElementById("answer").value;
-    p.hintsShown += 1;
-    render();
-  }
+  if (target.id === "hint-btn") { const p = progress(id); p.answer = document.getElementById("answer").value; p.hintsShown += 1; render(); }
   if (target.id === "reset") { delete state.student[id]; render(); }
 });
 
-window.addEventListener("hashchange", render);
+window.addEventListener("hashchange", () => { render(); window.scrollTo(0, 0); });
 render();
 </script>
 </body>
